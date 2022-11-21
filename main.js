@@ -2,7 +2,7 @@ const add = (a, b) => {
     return a + b;
 }
 
-const substract = (a, b) => {
+const subtract = (a, b) => {
     return a - b;
 }
 
@@ -18,20 +18,37 @@ const operate = (operator, a, b) => {
     if(operator === '+'){
         return add(a, b);
     } else if(operator === '-'){
-        return substract(a, b)
+        return subtract(a, b)
     } else if(operator === '*'){
         return multiply(a, b);
     } else if(operator === '/'){
         return divide(a, b);
     }
 }
-const buttons = document.querySelectorAll('div.button');
-const display = document.querySelector('div.display');
 
 
+const calculator = document.querySelector(".calculator");
+const keys = calculator.querySelector(".keys");
 
-buttons.forEach((div) => {
-    div.addEventListener('click', () => {
-        display.textContent = div.id;
-})});
 
+keys.addEventListener("click", e => {
+    const key = e.target;
+    const action = key.dataset.action;
+  if(!action) {
+    console.log('number key!');
+  } else if(
+    action === 'add' ||
+    action === 'subtract' ||
+    action === "multiply" ||
+    action === "divide"
+  ){
+    console.log("operator key")
+  } else if(action === "clear"){
+    console.log("clear key")
+  } else if (action === "decimal"){
+    console.log("decimal key")
+  } else if(action === "calculate"){
+    console.log("equal key")
+  }
+
+})

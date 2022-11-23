@@ -47,11 +47,24 @@ keys.addEventListener("click", e => {
     action === "multiply" ||
     action === "divide"
   ){
-    calculator.dataset.previousKeyType = "operator"
+    const firstValue = calculator.dataset.firstValue
+    const operator = calculator.dataset.operator
+    const secondValue = displayedNum
+
+    if(
+      firstValue &&
+      operator && 
+      previousKeyType !== 'operator'
+    ){
+      const calcValue = calculate(firstValue, operator, secondValue)
+      display.textContent = calcValue
+      calculator.dataset.firstValue = calcValue
+    } else {
+      calculator.dataset.firstValue = displayedNum
+    }
     key.classList.add('is-depressed')
+    calculator.dataset.previousKeyType = "operator"
     
-    
-    calculator.dataset.firstValue = displayedNum
     calculator.dataset.operator = action
   }
   if(action === "clear"){
@@ -70,12 +83,17 @@ keys.addEventListener("click", e => {
   } 
   
    if(action === "calculate"){
-    const secondValue = displayedNum;
-    const operator = calculator.dataset.operator
     const firstValue = calculator.dataset.firstValue
+    const operator = calculator.dataset.operator
+    const secondValue = displayedNum;
+    
+    if(firstValue){
+      display.textContent = calculate(firstValue, operator, secondValue)
+    }
+    
     
     calculator.dataset.previousKeyType = 'calculate'
-   display.textContent = calculate(firstValue, operator, secondValue)
+   
   }
   }
 })

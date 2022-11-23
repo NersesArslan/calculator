@@ -34,7 +34,10 @@ keys.addEventListener("click", e => {
         //what happend when user clicks on a number
   if(!action) {
     calculator.dataset.previousKeyType = 'number'
-    if(displayedNum === '0' || previousKeyType === 'operator'){
+    if(displayedNum === '0' || 
+       previousKeyType === 'operator' ||
+       previousKeyType === 'calculate'
+    ){
       display.textContent = keyContent;
     } else {
       display.textContent = displayedNum + keyContent
@@ -55,7 +58,8 @@ keys.addEventListener("click", e => {
     if(
       firstValue &&
       operator && 
-      previousKeyType !== 'operator'
+      previousKeyType !== 'operator' &&
+      previousKeyType !== 'calculate'
     ){
       const calcValue  = calculate(firstValue, operator, secondValue)
       display.textContent = calcValue
@@ -67,13 +71,28 @@ keys.addEventListener("click", e => {
     calculator.dataset.previousKeyType = "operator"
     calculator.dataset.operator = action
   }
+  if(action !== 'clear'){
+    const clearButton = calculator.querySelector('[data-action=clear]')
+    clearButton.textContent = 'CE'
+  }
   if(action === "clear"){
+    if(key.textContent === 'CE'){
+      calculator.dataset.firstValue = ''
+      calculator.dataset.modValue = ''
+      calculator.dataset.operator = ''
+      calculator.dataset.previousKeyType = ''
     
+      key.textContent = 'AC'
+    }
+
+    display.textContent = 0
     calculator.dataset.previousKeyType = 'clear'
-    display.textContent = '0';
+    
   } 
   if (action === "decimal"){
-    if(previousKeyType === "operator"){
+    if(previousKeyType === "operator" ||
+       previousKeyType === 'calculate'
+       ){
       display.textContent = '0.'
     } else if (!displayedNum.includes('.')){
       display.textContent = displayedNum + '.'
@@ -95,7 +114,11 @@ keys.addEventListener("click", e => {
         secondValue = calculator.dataset.modValue
         
       }
+      if(operator === 'divide' && secondValue === '0'){
+        display.textContent = 'Nice Try'
+      } else {
       display.textContent = calculate(firstValue, operator, secondValue)
+      }
     }
    
     calculator.dataset.modValue = secondValue

@@ -31,8 +31,8 @@ keys.addEventListener("click", e => {
     Array.from(key.parentNode.children)
       .forEach(k => k.classList.remove('is-depressed'))
 
+        //what happend when user clicks on a number
   if(!action) {
-   
     calculator.dataset.previousKeyType = 'number'
     if(displayedNum === '0' || previousKeyType === 'operator'){
       display.textContent = keyContent;
@@ -41,6 +41,7 @@ keys.addEventListener("click", e => {
     }
     
   } 
+  //  what happens when user clicks on an operator
   if(
     action === 'add' ||
     action === 'subtract' ||
@@ -56,7 +57,7 @@ keys.addEventListener("click", e => {
       operator && 
       previousKeyType !== 'operator'
     ){
-      const calcValue = calculate(firstValue, operator, secondValue)
+      const calcValue  = calculate(firstValue, operator, secondValue)
       display.textContent = calcValue
       calculator.dataset.firstValue = calcValue
     } else {
@@ -64,7 +65,6 @@ keys.addEventListener("click", e => {
     }
     key.classList.add('is-depressed')
     calculator.dataset.previousKeyType = "operator"
-    
     calculator.dataset.operator = action
   }
   if(action === "clear"){
@@ -82,17 +82,25 @@ keys.addEventListener("click", e => {
     calculator.dataset.previousKeyType = 'decimal'
   } 
   
-   if(action === "calculate"){
-    const firstValue = calculator.dataset.firstValue
+   if(action === 'calculate'){
+    let firstValue = calculator.dataset.firstValue
     const operator = calculator.dataset.operator
-    const secondValue = displayedNum;
+    let secondValue = displayedNum
+
     
+
     if(firstValue){
+      if(previousKeyType === 'calculate'){
+        firstValue = displayedNum
+        secondValue = calculator.dataset.modValue
+        
+      }
       display.textContent = calculate(firstValue, operator, secondValue)
     }
-    
-    
+   
+    calculator.dataset.modValue = secondValue
     calculator.dataset.previousKeyType = 'calculate'
+    
    
   }
   }
